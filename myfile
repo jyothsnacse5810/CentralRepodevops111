@@ -1,1 +1,40 @@
-1st line from mumbai 
+1st line from mumbai
+
+2nd line from mumbai 
+
+pipeline {
+
+    agent {
+        node {
+            label 'SLAVE01'
+        }
+    }
+
+    tools { 
+        maven 'maven3' 
+    }
+
+    options {
+        buildDiscarder logRotator( 
+                    daysToKeepStr: '15', 
+                    numToKeepStr: '10'
+            )
+    }
+
+    environment {
+        APP_NAME = "DCUBE_APP",
+        APP_ENV  = "DEV"
+    }
+
+    stages {
+        
+        stage('Cleanup Workspace') {
+            steps {
+                cleanWs()
+                sh """
+                echo "Cleaned Up Workspace for ${APP_NAME}"
+                """
+            }
+        }
+
+ 
